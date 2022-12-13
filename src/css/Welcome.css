@@ -1,0 +1,512 @@
+@font-face {
+    font-family: Urbanist-Bold;
+    src: url(../fonts/Urbanist-Bold.woff);
+}
+
+@font-face {
+    font-family: Urbanist-Regular;
+    src: url(../fonts/Urbanist-Regular.woff);
+}
+
+.ion-color-primary-cust {
+    --ion-color-base: var(--ion-color-primary-cust);
+    --ion-color-base-rgb: var(--ion-color-primary-cust-rgb);
+    --ion-color-contrast: var(--ion-color-primary-cust-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-primary-cust-contrast-rgb);
+    --ion-color-shade: var(--ion-color-primary-cust-shade);
+    --ion-color-tint: var(--ion-color-primary-cust-tint);
+}
+
+.ion-color-primary-cust-2 {
+    --ion-color-base: var(--ion-color-primary-cust-2);
+    --ion-color-base-rgb: var(--ion-color-primary-cust-2-rgb);
+    --ion-color-contrast: var(--ion-color-primary-cust-2-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-primary-cust-2-contrast-rgb);
+    --ion-color-shade: var(--ion-color-primary-cust-2-shade);
+    --ion-color-tint: var(--ion-color-primary-cust-2-tint);
+}
+
+.container {
+    text-align: center;
+    position: relative;
+    width: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: 0px 24px 0px 24px;
+}
+
+.container.wrapper {
+    height: fit-content;
+    min-height: 100vh;
+}
+
+
+
+.container.content {
+    margin-top: 100px;
+}
+
+.welcome-title {
+    color: #212121;
+    font-family: 'Urbanist-Bold';
+}
+
+.welcome-title h1 {
+    font-size: 24px;
+}
+
+.desc-title {
+    margin-bottom: 100px;
+    font-family: 'Urbanist-Regular';
+}
+
+.desc-title p {
+    font-size: 18px;
+}
+
+.desc-title p.but-icon {
+    color: #786FF2;
+
+}
+
+.desc-title .icon {
+    top: 6px;
+    left: 5px;
+    position: relative;
+    font-size: 25px;
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+    width: 30px;
+    border-radius: 0px;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    background: #584CF4;
+}
+
+.swiper-horizontal>.swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal,
+.swiper-pagination-custom,
+.swiper-pagination-fraction {
+    bottom: 10%;
+}
+
+#swiperhome .swiper-pagination.swiper-pagination-bullets.swiper-pagination-horizontal {
+    bottom: 0px;
+}
+
+#swiperhome .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    background: rgb(125, 140, 228);
+    width: 8px;
+}
+
+ion-item.block {
+    --background: #FAFAFA;
+    --border-radius: 8px;
+    font-family: 'Urbanist-Bold';
+    --color: #212121;
+
+}
+
+/* .block{
+    width: 312px;
+    height: 45px;
+    background: #FAFAFA;
+    color: #212121;
+    font-family: 'Urbanist-Bold';
+    font-size: 12px;
+    border-radius: 16px;
+} */
+
+
+
+
+
+
+ion-button.btn-login {
+    --background: #FFFFFF;
+    --background-hover: #9ce0be;
+    --background-activated: #88f4be;
+    --background-focused: #88f4be;
+    width: 289px;
+    height: 43px;
+    --color: #212121;
+    --border-radius: 16px;
+    --border-color: #F0F0F0;
+    --border-style: solid;
+    --border-width: 1px;
+    /* --box-shadow: 0 2px 6px 0
+    rgb(0, 0, 0, 0.25); */
+    --ripple-color: #584CF4;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    font-family: 'Urbanist-Bold';
+    font-size: 12px;
+    text-transform: capitalize;
+}
+
+ion-button.btn-login.email {
+    --background: #584CF4;
+    --color: #FFFFFF;
+    font-size: 14px;
+    height: 45px;
+    width: 312px;
+    --ripple-color: #ffffff;
+}
+
+ion-button.btn-login.referral {
+    width: 92px;
+    height: 30px;
+    --background: #584CF4;
+    --color: #FFFFFF;
+    font-size: 14px;
+    --ripple-color: #ffffff;
+    --border-radius: 10px;
+    margin-top: 30px;
+    font-family: 'Urbanist-Bold';
+    font-size: 14px;
+    --box-shadow: unset;
+    border-color: none;
+}
+
+ion-img.or {
+    width: auto;
+    height: 44px;
+}
+
+ion-text.text-default {
+    color: #898989;
+    font-family: 'Urbanist-Regular';
+    font-size: 12px;
+}
+
+
+.txt-signup {
+    color: #584CF4;
+    font-family: 'Urbanist-Bold';
+    margin-left: 0px;
+    font-size: 12px;
+    margin-top: -5px;
+    text-transform: capitalize;
+}
+
+.txt-kirimulang {
+    margin-left: -10px;
+}
+
+.mtop-12 {
+    margin-top: 12px;
+}
+
+.header-title {
+    color: #212121;
+    font-size: 24px;
+    font-family: 'Urbanist-Bold';
+}
+
+.txt-tittle {
+    font-size: 16px;
+    font-family: 'Urbanist-Bold';
+    color: #212121;
+}
+
+.txt-tittle.delete {
+    color: red;
+    font-size: 12px;
+}
+
+.txt-default {
+    font-size: 14px;
+    font-family: 'Urbanist-Regular';
+}
+
+.h30 {
+    height: 30px;
+}
+
+ion-fab-button.otp {
+    width: 50px;
+    height: 50px;
+
+}
+
+.btn-center {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.font-regular{
+    font-family: 'Urbanist-Regular';
+}
+
+.input-box {
+    --padding-bottom: 0px;
+    --padding-start: 0px;
+    font-family: 'Urbanist-Regular';
+    font-size: 14px;
+}
+
+.input-box.password {
+    font-size: 24px;
+    width: 263px;
+}
+
+.flex {
+    display: flex;
+
+}
+
+.icon.password {
+    color: #6C6C6C;
+    width: 20px;
+    height: 20px;
+    margin-top: 50px;
+
+}
+
+
+
+.item .sc-ion-label-md-h,
+.item .sc-ion-label-ios-h {
+    font-size: 16px;
+    font-family: 'Urbanist-Bold';
+    color: #212121;
+    margin-bottom: 14px;
+}
+
+
+.test {
+    width: 300px;
+    display: flex;
+}
+
+
+ion-searchbar.searchbar {
+    /* --background: #19422d;
+    --color: #fff;
+    --placeholder-color: #fff;
+    --icon-color: #fff;
+    --clear-button-color: #fff; */
+
+    --border-radius: 8px;
+    --box-shadow: unset;
+
+    font-family: 'Urbanist-Regular';
+
+
+
+
+}
+
+.searchbar-input.sc-ion-searchbar-md {
+    font-size: 14px;
+    line-height: 0px;
+}
+
+ion-searchbar.ios.searchbar {
+    /* --cancel-button-color: #19422d; */
+    --border-radius: 8px;
+    --box-shadow: unset;
+
+
+    font-family: 'Urbanist-Regular';
+}
+
+ion-searchbar.md.searchbar {
+    /* --cancel-button-color: #fff; */
+    --border-radius: 8px;
+    --box-shadow: unset;
+
+
+    font-family: 'Urbanist-Regular';
+}
+
+.searchbar-input-container.sc-ion-searchbar-ios {
+    height: 30px;
+
+
+}
+
+.searchbar-input.sc-ion-searchbar-ios {
+    font-size: 14px;
+
+}
+
+.searchbar-search-icon.sc-ion-searchbar-md {
+    top: 5px;
+}
+
+ion-toolbar.toolbar-cust {
+    /* --background: #19422d; */
+    /* --color: white; */
+    --border: unset;
+    height: auto;
+
+
+
+
+}
+
+.header-md::after {
+    background: unset;
+}
+
+.icon-toolbar {
+    font-size: 24px;
+    margin-top: 4px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+ion-toolbar .sc-ion-searchbar-ios-h,
+ion-toolbar .sc-ion-searchbar-ios-h {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    height: 30px;
+}
+
+.toolbar-bottom {
+    height: 79px;
+    background: var(--ion-color-primary-cust);
+    margin-bottom: -10px;
+    background-image: url("https://i.ibb.co/prbR9JZ/pattern1.png");
+}
+
+.content {
+    background: var(--ion-color-primary-cust-contrast);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding-top: 100px;
+
+
+
+}
+
+.home-toolbar-top {}
+
+ion-item.imageframe {
+    width: 55px;
+    height: 30px;
+    border-radius: 5px;
+    --padding-start: 0px;
+    --inner-padding-end: 0px;
+    margin-top: 8px;
+}
+
+ion-img.itemlastseen::part(image) {
+    width: 0px;
+    height: 0px;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    display: block;
+    margin: auto;
+    object-fit: contain;
+    inset: 0px;
+    position: absolute;
+    padding: 0px;
+    top: -16px;
+}
+
+
+.feedslider {
+    margin-top: 10px;
+    border-radius: 15px;
+    border-top: 2px dashed rgb(177 177 177);
+}
+
+.feedslideradjsutment {
+    height: 173px !important;
+    bottom: 0px;
+}
+
+.badge-notif {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    width: auto;
+    max-width: 21px;
+    min-width: 16px;
+    height: 16px;
+    font-size: 8px;
+    padding-left: 4px;
+    padding-top: 4px;
+    position: absolute;
+    z-index: 999;
+    top: 3px;
+    right: 5px;
+    text-align: center;
+    font-family: 'Urbanist-Regular';
+}
+
+ion-back-button.back-button-disabled.back-button-searchbar {
+    opacity: 1;
+
+}
+
+.align-center {
+    align-self: center;
+}
+
+.right {
+    text-align: right;
+    text-align: -webkit-right;
+}
+
+.imagez {
+    max-width: 310px;
+    max-height: 211px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.inputform {
+    width: auto;
+    max-width: 600px;
+}
+
+ion-modal.full::part(content) {
+    height: 100%;
+    width: 100%;
+}
+
+.alert-head.sc-ion-alert-md h2{
+    font-size: 18px;
+    font-family: 'Urbanist-Bold';
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.alert-message.sc-ion-alert-md{
+    text-align: center;
+    font-size: 14px;
+}
+
+.sc-ion-alert-md-h{
+    --min-width: 350px;
+}
+
+.alert-text {
+    width: 100%;
+    height: auto;
+    display: block;
+    position: relative;
+    
+}
+
+.alert-text.header{
+   
+}
+
+#loadingstatus{
+    display: none;
+}
