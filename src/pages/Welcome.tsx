@@ -37,7 +37,7 @@ const Welcome: React.FC = () => {
 
                                             <div className="container">
                                                 <div className="welcome-title">
-                                                    <h1>Beli item game termurah! test</h1>
+                                                    <h1>Beli item game termurah! test 2</h1>
                                                 </div>
                                                 <div className="desc-title">
                                                     <p>Beli banyak dengan harga termurah,

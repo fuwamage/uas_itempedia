@@ -10,8 +10,7 @@ import { Drivers, Storage } from '@ionic/storage';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 const SigninEmail: React.FC = () => {
-    const [dummyNameStorage, setDummyNameStorage] = useState<string>('');
-    
+    const [dummyNameStorage, setDummyNameStorage] = useState<string>('');    
     const sqlStorage = async () => {
         const store = new Storage({
             name: 'db_users',

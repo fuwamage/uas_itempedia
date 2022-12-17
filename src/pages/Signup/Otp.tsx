@@ -68,7 +68,7 @@ const Otp: React.FC = () => {
 
         signupCtx.addUserdata(mailPayload.email, mailPayload.otp);
 
-        axios.post('https://api-itempedia.vercel.app/endpoint/api/sendOTP', mailPayload).then((res) => {
+        axios.post('http://192.168.100.65:8001/endpoint/api/sendOTP', mailPayload).then((res) => {
             if (res.data.status) {
                 alert('otp has been sent again to your email');
             }

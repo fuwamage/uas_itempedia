@@ -213,6 +213,10 @@ ion-text.text-default {
     color: #212121;
 }
 
+.txt-tittle.sub{
+    font-size: 14px;
+}
+
 .txt-tittle.delete {
     color: red;
     font-size: 12px;
@@ -240,7 +244,7 @@ ion-fab-button.otp {
     justify-content: center;
 }
 
-.font-regular{
+.font-regular {
     font-family: 'Urbanist-Regular';
 }
 
@@ -259,6 +263,10 @@ ion-fab-button.otp {
 .flex {
     display: flex;
 
+}
+
+.block {
+    display: block;
 }
 
 .icon.password {
@@ -479,19 +487,19 @@ ion-modal.full::part(content) {
     width: 100%;
 }
 
-.alert-head.sc-ion-alert-md h2{
+.alert-head.sc-ion-alert-md h2 {
     font-size: 18px;
     font-family: 'Urbanist-Bold';
     text-align: center;
     text-transform: capitalize;
 }
 
-.alert-message.sc-ion-alert-md{
+.alert-message.sc-ion-alert-md {
     text-align: center;
     font-size: 14px;
 }
 
-.sc-ion-alert-md-h{
+.sc-ion-alert-md-h {
     --min-width: 350px;
 }
 
@@ -500,13 +508,48 @@ ion-modal.full::part(content) {
     height: auto;
     display: block;
     position: relative;
-    
+
 }
 
-.alert-text.header{
-   
-}
+.alert-text.header {}
 
-#loadingstatus{
+#loadingstatus {
     display: none;
+}
+
+.account-greet {
+    font-family: 'Urbanist-Bold';
+    font-size: 16px;
+    color: #F4F4F4;
+}
+
+.account-name {
+    font-family: 'Urbanist-Regular';
+    font-size: 16px;
+    color: #F4F4F4;
+}
+
+.ava-outline {
+    outline: 1px solid #c1a5ff;
+}
+
+.balance-adjust {
+    position: relative;
+    top: -7px;
+    font-size: 12px;
+    font-family: 'Urbanist-Bold';
+}
+
+ion-card-content.accountinfo.md.card-content-md {
+    padding: 0px;
+    background-image: url("https://i.ibb.co/prbR9JZ/pattern1.png");
+}
+
+.nopad {
+    padding: unset;
+}
+
+.subaccinfo {
+    background: #5f55ec;
+    width: fit-content;
 }

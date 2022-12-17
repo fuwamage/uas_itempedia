@@ -6,6 +6,7 @@ import { calendar, home, homeOutline, informationCircle, mailOpen, mailOpenOutli
 import { Redirect, Route } from 'react-router';
 import Signin from '../Signin/Signin';
 import HomeFeed from './HomeFeed';
+import Account from './Account';
 
 
 
@@ -17,6 +18,7 @@ const Home: React.FC = () => {
                 <IonRouterOutlet >
                     <Redirect exact path="/home" to="/home/feed" />
                     <Route exact path="/home/feed" component={HomeFeed} />
+                    <Route exact path="/home/account" component={Account} />
                 </IonRouterOutlet>
                 <IonTabBar slot="bottom">
                     <IonTabButton tab="feed" href="/home/feed">
@@ -31,7 +33,7 @@ const Home: React.FC = () => {
                         <IonIcon icon={mailOutline} />
                         <IonLabel>Message</IonLabel>
                     </IonTabButton>
-                    <IonTabButton tab="account" href="/home/feed">
+                    <IonTabButton tab="account" href="/home/account">
                         <IonIcon icon={personOutline} />
                         <IonLabel>Account</IonLabel>
                     </IonTabButton>

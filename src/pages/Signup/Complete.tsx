@@ -33,7 +33,7 @@ const Complete: React.FC = () => {
 
         console.log('payload: ', formData)
         
-        axios.post('https://api-itempedia.vercel.app/endpoint/api/users/signup', formData).then(response => {
+        axios.post('http://192.168.100.65:8001/endpoint/api/users/signup', formData).then(response => {
             if (response.data.status) {
                 history.push('/home');
                 alert('signup success: ' + response.data.message)
@@ -60,7 +60,7 @@ const Complete: React.FC = () => {
     }
 
     const presentToast = (position: 'top' | 'middle' | 'bottom') => {
-        axios.get('https://api-itempedia.vercel.app/endpoint/api/users/checkreferral/' + referrer).then(response => {
+        axios.get('http://192.168.100.65:8001/endpoint/api/users/checkreferral/' + referrer).then(response => {
             if (response.data.status) {
                 present({
                     message: 'This referral code belongs to ' + response.data.data.name,

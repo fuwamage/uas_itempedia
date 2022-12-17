@@ -17,7 +17,7 @@ const Signup: React.FC = () => {
     const [dummyNameStorage, setDummyNameStorage] = useState<string>('');
 
     const sqlStorage = async () => {
-        // https://github.com/ionic-team/ionic-storage
+        // http://github.com/ionic-team/ionic-storage
         const store = new Storage({
             name: 'db_users',
             driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
@@ -96,7 +96,7 @@ const Signup: React.FC = () => {
         const formData = { email: email };
         setLoadingstatus(true);
         setBtnStatus(true);
-        axios.post('https://api-itempedia.vercel.app/endpoint/api/users/checkemail', formData)
+        axios.post('http://192.168.100.65:8001/endpoint/api/users/checkemail', formData)
             .then(response => {
                 if (response.data.status) {
                     const otp = response.data.otp;
@@ -118,13 +118,15 @@ const Signup: React.FC = () => {
                             email: formData.email,
                             otp: response.data.otp
                         }
-                        axios.post('https://api-itempedia.vercel.app/endpoint/api/sendOTP', mailPayload).then((res) => {
-                            if (res.data.status) {
-                                console.log('otp has been sent to your email')
-                                window.localStorage.setItem('dataUser', JSON.stringify(localUserData))
-                                navigatePage();
-                            }
-                        })
+                        window.localStorage.setItem('dataUser', JSON.stringify(localUserData))
+                        navigatePage();
+                        // axios.post('http://192.168.100.65:8001/endpoint/api/sendOTP', mailPayload).then((res) => {
+                        //     if (res.data.status) {
+                        //         console.log('otp has been sent to your email')
+                        //         window.localStorage.setItem('dataUser', JSON.stringify(localUserData))
+                        //         navigatePage();
+                        //     }
+                        // })
                     }
                 }
             })
