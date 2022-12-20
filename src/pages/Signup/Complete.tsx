@@ -40,7 +40,7 @@ const Complete: React.FC = () => {
 
         console.log('payload: ', formData)
         
-        axios.post('https://itempedia.wrathnet.com/endpoint/api/users/signup', formData).then(response => {
+        axios.post('/endpoint/api/users/signup', formData).then(response => {
             if (response.data.status) {
                 history.push('/home');
                 alert('signup success: ' + response.data.message)

@@ -97,7 +97,7 @@ const Signup: React.FC = () => {
         const formData = { email: email };
         setLoadingstatus(true);
         setBtnStatus(true);
-        axios.post('https://itempedia.wrathnet.com/endpoint/api/users/checkemail', formData)
+        axios.post('/endpoint/api/users/checkemail', formData)
             .then(response => {
                 if (response.data.status) {
                     const otp = response.data.otp;
@@ -121,7 +121,7 @@ const Signup: React.FC = () => {
                         }
                         window.localStorage.setItem('dataUser', JSON.stringify(localUserData))
                         navigatePage();
-                        axios.post('https://itempedia.wrathnet.com/endpoint/api/sendOTP', mailPayload).then((res) => {
+                        axios.post('/endpoint/api/sendOTP', mailPayload).then((res) => {
                             if (res.data.status) {
                                 console.log('otp has been sent to your email')
                                 window.localStorage.setItem('dataUser', JSON.stringify(localUserData))

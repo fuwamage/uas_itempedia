@@ -47,7 +47,7 @@ const Welcome: React.FC = () => {
 
         const access_token = await store.get('access_token');
 
-        await axios.get('https://itempedia.wrathnet.com/endpoint/api/user', {headers: getHeader(atob(JSON.parse(access_token)))}).then((response: any) => {
+        await axios.get('/endpoint/api/user', {headers: getHeader(atob(JSON.parse(access_token)))}).then((response: any) => {
             if(response.status) {
                 setAuthUsers(response.data.data);
                 console.log('sanctum user: ', authUser);

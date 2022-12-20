@@ -33,6 +33,10 @@ import axios from 'axios';
 
 setupIonicReact();
 
+axios.defaults.baseURL = 'https://itempedia.wrathnet.com';
+// axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// axios.defaults.withCredentials = true;
+
 const App: React.FC = () => {  
   return (
     <IonApp>

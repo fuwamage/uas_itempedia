@@ -44,7 +44,7 @@ const SigninEmail: React.FC = () => {
             password: password
         }
 
-        axios.post('https://itempedia.wrathnet.com/endpoint/api/users/signin', formData).then(response => {
+        axios.post('/endpoint/api/users/signin', formData).then(response => {
             if (response.data.status) {
                 history.push('/home');
                 alert('sigin success: ' + response.data.message)

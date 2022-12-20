@@ -72,13 +72,13 @@ const Accoount: React.FC = () => {
 
         const access_token = await store.get('access_token');
 
-        await axios.get('https://itempedia.wrathnet.com/endpoint/api/user', { headers: getHeader(atob(JSON.parse(access_token))) }).then((response: any) => {
+        await axios.get('/endpoint/api/user', { headers: getHeader(atob(JSON.parse(access_token))) }).then((response: any) => {
             if (response.status) {
                 setAuthUser(response.data)
                 console.log('sanctum user: ', response.data);
                 setAccessToken(atob(JSON.parse(access_token)));
 
-                axios.get('https://itempedia.wrathnet.com/endpoint/api/auth/user/get/merchant', { headers: getHeader(atob(JSON.parse(access_token))) }).then((response: any) => {
+                axios.get('/endpoint/api/auth/user/get/merchant', { headers: getHeader(atob(JSON.parse(access_token))) }).then((response: any) => {
                     if (response.data.status) {
                         setAuthMerchant(response.data.data);
                         setAuthMerchantStatus(true);
@@ -149,9 +149,9 @@ const Accoount: React.FC = () => {
     }
 
     const logoutAccount = () => {
-        axios.delete('https://itempedia.wrathnet.com/endpoint/api/auth/user/tokensdestroy', { headers: getHeader(accessToken) }).then((response: any) => {
+        axios.delete('/endpoint/api/auth/user/tokensdestroy', { headers: getHeader(accessToken) }).then((response: any) => {
             if (response.status) {
-                axios.get('https://itempedia.wrathnet.com/endpoint/api/auth/user/signout', { headers: getHeader(accessToken) }).then((response: any) => {
+                axios.get('/endpoint/api/auth/user/signout', { headers: getHeader(accessToken) }).then((response: any) => {
                     if (response.status) {
                         alert("You have successfully logged out.");
                         navigateBasePage();

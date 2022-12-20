@@ -50,14 +50,14 @@ const TopUpSaldo: React.FC = () => {
         const transaction_selected_segment = await store.get('transaction_selected_segment');
         setSelectedSegment(transaction_selected_segment);
 
-        await axios.get('https://itempedia.wrathnet.com/endpoint/api/users').then((response: any) => {
+        await axios.get('/endpoint/api/users').then((response: any) => {
             if (response.data.status) {
                 setAllUsers(response.data.data);
                 console.log('all users: ', response.data.data);
             }
         });
 
-        await axios.get('https://itempedia.wrathnet.com/endpoint/api/user', { headers: getHeader(atob(JSON.parse(access_token))) }).then((response: any) => {
+        await axios.get('/endpoint/api/user', { headers: getHeader(atob(JSON.parse(access_token))) }).then((response: any) => {
             if (response.status) {
                 setAuthUser(response.data)
                 console.log('sanctum user: ', response.data);
@@ -150,7 +150,7 @@ const TopUpSaldo: React.FC = () => {
             amount: amount
         };        
         
-        axios.post("https://itempedia.wrathnet.com/endpoint/api/auth/user/topup/midtrans", parameter, { headers: getHeader(accessToken) }).then((response) => {
+        axios.post("/endpoint/api/auth/user/topup/midtrans", parameter, { headers: getHeader(accessToken) }).then((response) => {
             if (response.data.status) {
                 const token_midtrans = response.data.data
                 console.log('asd: ', token_midtrans)

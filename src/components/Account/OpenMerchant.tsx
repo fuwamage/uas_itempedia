@@ -55,7 +55,7 @@ const OpenMerchant: React.FC<{ onMerchantRegistered: () => void }> = props => {
 
         const access_token = await store.get('access_token');
 
-        await axios.get('https://itempedia.wrathnet.com/endpoint/api/user', { headers: getHeader(atob(JSON.parse(access_token))) }).then((response: any) => {
+        await axios.get('/endpoint/api/user', { headers: getHeader(atob(JSON.parse(access_token))) }).then((response: any) => {
             if (response.status) {
                 setAuthUser(response.data)
                 console.log('sanctum user: ', response.data);
@@ -100,7 +100,7 @@ const OpenMerchant: React.FC<{ onMerchantRegistered: () => void }> = props => {
 
         console.log(authUser)
 
-        axios.post('https://itempedia.wrathnet.com/endpoint/api/auth/user/store/merchant', formData, { headers: getHeader(accessToken) }).then((response: any) => {
+        axios.post('/endpoint/api/auth/user/store/merchant', formData, { headers: getHeader(accessToken) }).then((response: any) => {
             if (response.status) {
                 console.log('current stored merchant: ', response.data.data);
                 setCurrentStoredMerchant(response.data.data)
