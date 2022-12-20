@@ -29,14 +29,15 @@ import Complete from './pages/Signup/Complete';
 import Home from './pages/Home/Home';
 import SignupContextProvider from './data/SignupContextProvider';
 
+import axios from 'axios';
+
 setupIonicReact();
 
-const App: React.FC = () => {
-  
+const App: React.FC = () => {  
   return (
     <IonApp>
       <IonReactRouter>
-        <IonRouterOutlet>
+        <IonRouterOutlet>          
           <Route exact path="/welcome" component={Welcome} />
           <Route exact path="/signin" component={Signin} />
           <Route exact path="/signin/email" component={SigninEmail} />

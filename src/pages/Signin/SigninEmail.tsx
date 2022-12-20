@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonPage, IonProgressBar, IonRow, IonText, IonTitle, IonToolbar, useIonToast, isPlatform, getPlatforms } from '@ionic/react';
 
 import '../../css/Welcome.css';
@@ -9,20 +9,28 @@ import { Redirect, Route, useHistory } from 'react-router';
 import { Drivers, Storage } from '@ionic/storage';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
-const SigninEmail: React.FC = () => {
-    const [dummyNameStorage, setDummyNameStorage] = useState<string>('');    
+import SignupContext from '../../data/signup-context';
+
+const SigninEmail: React.FC = () => {    
+    const [dummyNameStorage, setDummyNameStorage] = useState<string>('');
+    const [accessToken, setDummyAccessToken] = useState<string>('');
+
+    const signupCtx = useContext(SignupContext);
+
     const sqlStorage = async () => {
         const store = new Storage({
             name: 'db_users',
             driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
         });
-        await store.defineDriver(CordovaSQLiteDriver);
-        
+        await store.defineDriver(CordovaSQLiteDriver);        
         await store.create();
+
+        await store.set('name', 'Mr.Ionitron');
+
         const name = await store.get('name');
-        setDummyNameStorage(name)
+        setDummyNameStorage(name);
     }
-    sqlStorage()
+    sqlStorage();
 
     const history = useHistory();
     const [email, setEmail] = useState<string>('');
@@ -36,7 +44,7 @@ const SigninEmail: React.FC = () => {
             password: password
         }
 
-        axios.post('https://api-itempedia.vercel.app/endpoint/api/users/signin', formData).then(response => {
+        axios.post('https://itempedia.wrathnet.com/endpoint/api/users/signin', formData).then(response => {
             if (response.data.status) {
                 history.push('/home');
                 alert('sigin success: ' + response.data.message)
@@ -49,6 +57,22 @@ const SigninEmail: React.FC = () => {
                     access_token: btoa(response.data.access_token)
                 }
                 window.localStorage.setItem('dataUser', JSON.stringify(authData))
+
+                const sqlStorage = async () => {
+                    const store = new Storage({
+                        name: 'db_users',
+                        driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
+                    });
+                    await store.defineDriver(CordovaSQLiteDriver);        
+                    await store.create();
+                    
+                    await store.set('access_token', JSON.stringify(authData.access_token));
+                    const access_token = await store.get('access_token');
+                    console.log("sqlite access_token via sign in: ", access_token)
+                }
+                sqlStorage();
+
+                
             }
         }).catch((error) => {
             setLoadingstatus(false);

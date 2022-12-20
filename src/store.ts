@@ -1,8 +1,7 @@
-export const getHeader = function() {
-    const tokenData = JSON.parse(window.localStorage.getItem('dataUser') as any);
+export const getHeader = function(uToken: string) {    
     const headers = {
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + window.atob(tokenData.access_token)
+        'Authorization': 'Bearer ' + uToken
     }
 
     return headers;

@@ -1,10 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonPage, IonRow, IonText, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 
 import '../../css/Welcome.css';
 import { arrowForward, eye, mail, mailOpenSharp } from 'ionicons/icons';
 import axios, { Axios, AxiosResponse } from 'axios';
 import { Redirect, Route, useHistory } from 'react-router';
+
+import { Drivers, Storage } from '@ionic/storage';
+import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
+
+import SignUpContext from '../../data/signup-context';
 
 const Complete: React.FC = () => {
 
@@ -17,6 +22,8 @@ const Complete: React.FC = () => {
     const [password, setPassword] = useState<string>('');
     const [rePassword, setRePassword] = useState<string>('');
     const [referrer, setReferrer] = useState<string>('');
+
+    const signupCtx = useContext(SignUpContext);
 
 
     const goSignUp = () => {
@@ -33,7 +40,7 @@ const Complete: React.FC = () => {
 
         console.log('payload: ', formData)
         
-        axios.post('http://192.168.100.65:8001/endpoint/api/users/signup', formData).then(response => {
+        axios.post('https://itempedia.wrathnet.com/endpoint/api/users/signup', formData).then(response => {
             if (response.data.status) {
                 history.push('/home');
                 alert('signup success: ' + response.data.message)
@@ -45,6 +52,20 @@ const Complete: React.FC = () => {
                     access_token: btoa(response.data.data.access_token)
                 }
                 window.localStorage.setItem('dataUser', JSON.stringify(authData))
+
+                const sqlStorage = async () => {
+                    const store = new Storage({
+                        name: 'db_users',
+                        driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
+                    });
+                    await store.defineDriver(CordovaSQLiteDriver);        
+                    await store.create();
+                    
+                    await store.set('access_token', JSON.stringify(authData.access_token));
+                    const access_token = await store.get('access_token');
+                    console.log("sqlite access_token via sign up: ", access_token)
+                }
+                sqlStorage()
             }
         }).catch((error) => {
             if(error.response.status === 403) {
@@ -60,7 +81,7 @@ const Complete: React.FC = () => {
     }
 
     const presentToast = (position: 'top' | 'middle' | 'bottom') => {
-        axios.get('http://192.168.100.65:8001/endpoint/api/users/checkreferral/' + referrer).then(response => {
+        axios.get('/api/users/checkreferral/' + referrer).then(response => {
             if (response.data.status) {
                 present({
                     message: 'This referral code belongs to ' + response.data.data.name,

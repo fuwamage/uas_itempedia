@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState, useContext } from 'react';
-import { IonAlert, IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonFab, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonMenuButton, IonNote, IonPage, IonProgressBar, IonRouterOutlet, IonRow, IonTab, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonFab, IonFooter, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonMenuButton, IonNote, IonPage, IonProgressBar, IonRouterOutlet, IonRow, IonTab, IonText, IonTitle, IonToolbar } from '@ionic/react';
 
 import '../../css/Welcome.css';
 import { calculatorOutline, mail, mailOpenSharp, mailOutline, star } from 'ionicons/icons';
@@ -13,6 +13,7 @@ import SignupContext from '../../data/signup-context';
 import { Drivers, Storage } from '@ionic/storage';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
+
 const Signup: React.FC = () => {
     const [dummyNameStorage, setDummyNameStorage] = useState<string>('');
 
@@ -23,8 +24,8 @@ const Signup: React.FC = () => {
             driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
         });
         await store.defineDriver(CordovaSQLiteDriver);
-        
         await store.create();
+
         await store.set('name', 'Mr.Ionitron');
         const name = await store.get('name');
         setDummyNameStorage(name)
@@ -34,13 +35,13 @@ const Signup: React.FC = () => {
     const [isAdding, setIsAdding] = useState(false);
     const [redirectToLogin, setRedirectToLogin] = useState(false);
     const signupCtx = useContext(SignupContext);
-    
+
 
     const signupAddHandler = (email: string, otpServer: string) => {
         signupCtx.addUserdata(email, otpServer);
         setIsAdding(false);
     };
-    
+
     if (redirectToLogin == true) {
 
     }
@@ -83,10 +84,10 @@ const Signup: React.FC = () => {
         history.push('/signin'),
         [history]);
 
-    if (redirectToLogin == true) {     
-            navigatetologin();
-            setError('');
-            setRedirectToLogin(false);      
+    if (redirectToLogin == true) {
+        navigatetologin();
+        setError('');
+        setRedirectToLogin(false);
     }
 
 
@@ -96,12 +97,12 @@ const Signup: React.FC = () => {
         const formData = { email: email };
         setLoadingstatus(true);
         setBtnStatus(true);
-        axios.post('http://192.168.100.65:8001/endpoint/api/users/checkemail', formData)
+        axios.post('https://itempedia.wrathnet.com/endpoint/api/users/checkemail', formData)
             .then(response => {
                 if (response.data.status) {
                     const otp = response.data.otp;
                     signupAddHandler(email, otp);
-                    setLoadingstatus(false);                    
+                    setLoadingstatus(false);
                     if (response.data.data === "error") {
                         if (response.data.message.email[0] == 'The email has already been taken.') {
                             response.data.message.email[0] = "Email sudah terdaftar";
@@ -120,13 +121,13 @@ const Signup: React.FC = () => {
                         }
                         window.localStorage.setItem('dataUser', JSON.stringify(localUserData))
                         navigatePage();
-                        // axios.post('http://192.168.100.65:8001/endpoint/api/sendOTP', mailPayload).then((res) => {
-                        //     if (res.data.status) {
-                        //         console.log('otp has been sent to your email')
-                        //         window.localStorage.setItem('dataUser', JSON.stringify(localUserData))
-                        //         navigatePage();
-                        //     }
-                        // })
+                        axios.post('https://itempedia.wrathnet.com/endpoint/api/sendOTP', mailPayload).then((res) => {
+                            if (res.data.status) {
+                                console.log('otp has been sent to your email')
+                                window.localStorage.setItem('dataUser', JSON.stringify(localUserData))
+                                navigatePage();
+                            }
+                        })
                     }
                 }
             })
@@ -234,13 +235,11 @@ const Signup: React.FC = () => {
                                             <IonButton fill="clear" className="txt-signup" routerLink="/signin">Sign in</IonButton>
                                         </IonText>
                                     </IonCol>
-
                                 </IonCol>
                             </IonRow>
                         </IonGrid>
-
-
                     </IonFab>
+
                 </IonContent>
 
             </IonPage>

@@ -213,7 +213,7 @@ ion-text.text-default {
     color: #212121;
 }
 
-.txt-tittle.sub{
+.txt-tittle.sub {
     font-size: 14px;
 }
 
@@ -242,6 +242,62 @@ ion-fab-button.otp {
     width: 100%;
     flex-direction: row;
     justify-content: center;
+}
+
+.icon-trash {
+    width: 20px;
+    height: 20px;
+    display: block;
+    right: 5px;
+    top: 30px;
+    position: absolute;
+}
+.btn-center.openmerch {
+    margin-top: 14px;
+}
+
+.tharga{
+    font-size: 14px;
+    font-family: 'Urbanist-Regular';
+    
+}
+
+.thargap{
+    font-size: 14px;
+    font-family: 'Urbanist-Bold';
+}
+
+.cart-buy-btn {
+    width: 150px;
+    
+}
+
+
+.shop-name {
+    padding-top: 15px;
+}
+
+.selectedCartAdjustment{
+
+
+        width: auto;
+        height: 46px;
+        margin: unset;
+        padding: unset;
+        top: -25px;
+        margin-bottom: -54px;
+
+  
+}
+
+
+
+.rp-label {
+    margin-right: 0px;
+}
+
+.top-up-box {
+    margin-top: 14px;
 }
 
 .font-regular {
@@ -277,6 +333,15 @@ ion-fab-button.otp {
 
 }
 
+.saldo-option {
+    color: black;
+    text-transform: none;
+    font-family: 'Urbanist-Bold';
+}
+
+.small-btn-topup{
+    
+}
 
 
 .item .sc-ion-label-md-h,
@@ -523,6 +588,11 @@ ion-modal.full::part(content) {
     color: #F4F4F4;
 }
 
+.itemname{
+    font-family: 'Urbanist-Bold';
+    font-size: 14px;
+}
+
 .account-name {
     font-family: 'Urbanist-Regular';
     font-size: 16px;
@@ -531,6 +601,12 @@ ion-modal.full::part(content) {
 
 .ava-outline {
     outline: 1px solid #c1a5ff;
+}
+
+.itemicon {
+    --border-radius: 6px;
+    height: 40px;
+    width: 55px;
 }
 
 .balance-adjust {
@@ -545,6 +621,11 @@ ion-card-content.accountinfo.md.card-content-md {
     background-image: url("https://i.ibb.co/prbR9JZ/pattern1.png");
 }
 
+ion-card-content.itemtransaction.md.card-content-md {
+    padding: 0px;
+   
+}
+
 .nopad {
     padding: unset;
 }
@@ -553,3 +634,104 @@ ion-card-content.accountinfo.md.card-content-md {
     background: #5f55ec;
     width: fit-content;
 }
+
+.subiteminfo {
+   
+    width: fit-content;
+}
+
+.price{
+    color: red;
+}
+
+.pembayaran{
+    background: green;
+}
+
+
+.icon-acc-frame {
+    width: 20px;
+    height: 20px;
+}
+
+.cat-acc {
+    width: auto;
+    min-width: 68px;
+    max-width: fit-content;
+
+    display: block;
+    height: 57px;
+}
+
+.subinfotransaction{
+    text-align: left;
+}
+.subinfotransaction.payment {
+    height: 40px;
+    background: #3880ff;
+}
+.txt-cat-acc {
+    display: block;
+    text-align: center;
+    font-size: 12px;
+}
+
+.adjustment-cat-acc {
+
+    padding: unset;
+    text-align: -webkit-center;
+    height: 0px;
+
+}
+
+.segment-txt {
+    font-size: 12px;
+    font-family: 'Urbanist-Regular';
+    margin-bottom: 0px;
+    color: #212121;
+    text-transform: none;
+}
+
+
+ion-segment-button {
+    height: 40px;
+    min-height: 40px;
+    margin-left: 5px;
+    border-bottom: 1px solid #EFEFEF;
+}
+
+ion-segment-button.segment-button-checked {
+    border-bottom: unset;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.segementbutton::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.segementbutton {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.lottie-frame svg{
+    width: auto;
+    max-width:  206px;
+    height: auto;
+    max-height: 207px;
+}
+
+.place-content-center{
+    place-content: center;
+}
+
+ion-modal#open-merchant-mod {
+    
+    --border-radius: 16px;
+   
+  }
+  
+

@@ -13,11 +13,63 @@ import 'swiper/css/scrollbar';
 import 'swiper/css/autoplay';
 import 'swiper/css/keyboard';
 import 'swiper/css/zoom';
-
 import '../css/Welcome.css';
+
+import axios from 'axios';
+import { useState, useEffect, useCallback } from 'react';
+import { useHistory } from 'react-router';
+
+/* Token */
+import { getHeader } from '../store';
+import { Drivers, Storage } from '@ionic/storage';
+import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 
 const Welcome: React.FC = () => {
+
+    const history = useHistory();
+    
+    const [accessToken, setAccessToken] = useState<string>('');
+    const [authUser, setAuthUsers] = useState([]);
+    var [counter, setCounters] = useState(0);
+
+    const navigateBasePage = useCallback(() =>
+        history.push('/welcome'),
+        [history]);
+
+    const sqlStorage = async () => {
+        const store = new Storage({
+            name: 'db_users',
+            driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
+        });
+        await store.defineDriver(CordovaSQLiteDriver);        
+        await store.create();
+
+        const access_token = await store.get('access_token');
+
+        await axios.get('https://itempedia.wrathnet.com/endpoint/api/user', {headers: getHeader(atob(JSON.parse(access_token)))}).then((response: any) => {
+            if(response.status) {
+                setAuthUsers(response.data.data);
+                console.log('sanctum user: ', authUser);
+                setAccessToken(atob(JSON.parse(access_token)));
+                history.push('/home');
+            }
+        }).catch((error) => {
+            if(error.response.status == 401) {
+                navigateBasePage();
+            } else {
+                alert(error.response)
+            }      
+        });
+    }
+
+    useEffect(() => {
+        counter++;
+        if (counter == 1) {
+            sqlStorage();            
+        }
+    }, []);
+
     return (
         <>
             <IonPage>
@@ -37,7 +89,7 @@ const Welcome: React.FC = () => {
 
                                             <div className="container">
                                                 <div className="welcome-title">
-                                                    <h1>Beli item game termurah! test 2</h1>
+                                                    <h1>Beli item game termurah! test 33</h1>
                                                 </div>
                                                 <div className="desc-title">
                                                     <p>Beli banyak dengan harga termurah,

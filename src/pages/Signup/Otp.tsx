@@ -68,7 +68,7 @@ const Otp: React.FC = () => {
 
         signupCtx.addUserdata(mailPayload.email, mailPayload.otp);
 
-        axios.post('http://192.168.100.65:8001/endpoint/api/sendOTP', mailPayload).then((res) => {
+        axios.post('https://itempedia.wrathnet.com/endpoint/api/sendOTP', mailPayload).then((res) => {
             if (res.data.status) {
                 alert('otp has been sent again to your email');
             }

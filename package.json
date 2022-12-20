@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@awesome-cordova-plugins/keyboard": "^6.2.0",
+    "@capacitor-community/keyboard-react": "^0.1.0",
     "@capacitor/android": "^4.5.0",
     "@capacitor/app": "4.1.1",
     "@capacitor/core": "^4.5.0",
@@ -26,14 +28,20 @@
     "axios": "^1.2.0",
     "capacitor": "^0.5.5",
     "cordova": "^11.0.0",
+    "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-nativestorage": "^2.3.2",
     "cordova-sqlite-storage": "^6.0.0",
     "history": "^4.9.0",
     "ionic": "^5.4.16",
     "ionicons": "^6.0.3",
     "localforage-cordovasqlitedriver": "^1.8.0",
+    "lottie": "^0.0.1",
+    "lottie-react": "^2.3.1",
+    "midtrans-node-client": "^0.0.6",
+    "querystring": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
     "react-redux": "^8.0.5",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.2.0",
@@ -82,6 +90,7 @@
   "devDependencies": {
     "@capacitor-community/sqlite": "^4.5.0",
     "@capacitor/cli": "^4.5.0",
+    "@types/react-helmet": "^6.1.6",
     "react-scripts": "5.0.1"
   },
   "description": "An Ionic project"

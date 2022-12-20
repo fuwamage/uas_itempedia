@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { IonAvatar, IonBackButton, IonBadge, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonicSlides, IonImg, IonInput, IonItem, IonLabel, IonList, IonModal, IonPage, IonRow, IonSearchbar, IonSlide, IonSlides, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { IonAvatar, IonBackButton, IonBadge, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonicSlides, IonImg, IonInput, IonItem, IonLabel, IonList, IonModal, IonPage, IonRow, IonSearchbar, IonSlide, IonSlides, IonText, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewDidLeave, useIonViewWillEnter, useIonViewWillLeave } from '@ionic/react';
 
 import '../../css/Welcome.css';
 import { cartOutline, close, notificationsOutline, searchOutline, time, timeOutline, wallet, walletOutline } from 'ionicons/icons';
@@ -22,69 +22,176 @@ import axios, { AxiosResponse } from 'axios';
 
 /* Token */
 import { getHeader } from '../../store';
+import { Drivers, Storage } from '@ionic/storage';
+import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
+
+import { useHistory } from 'react-router';
+import OpenMerchant from '../../components/Account/OpenMerchant';
 
 const Accoount: React.FC = () => {
 
-    /* Buat nampilin hasil fetch */
-    // const [data, setData] = useState<AxiosResponse>();
-    // const url = "https://dev.wrathnet.com/api/patch_note";
-    // const [students, setStudents] = useState<Array<AxiosResponse>>([]);
+    interface User {
+        id: number,
+        name: string,
+        avatar: string,
+        referral: string,
+        referrer: string,
+        email: string
+        email_verified_at: string
+        updated_at: string
+        created_at: string
+    }
+    interface Merchant {
+        userID: number,
+        merchantBio: string,
+        merchantName: string,
+        merchantID: string,
+        updated_at: string
+        created_at: string
+    }
 
-    // useEffect(() => {
-    //     axios.get(url).then((response) => {
-    //         setData(response);
-    //         console.log(data);
-    //     });
-    // }, []);
+    const history = useHistory();
 
-    const [data, setData] = useState<AxiosResponse>();
-    const URL = "https://api-itempedia.vercel.app/endpoint/api/users";
-    const [students, setStudents] = useState([]);
+    const [accessToken, setAccessToken] = useState<string>('');
+    const [authUser, setAuthUser] = useState<User>();
+    const [authMerchant, setAuthMerchant] = useState<Merchant>();
+    const [authMerchantStatus, setAuthMerchantStatus] = useState<Boolean>(false);
     var [counter, setCounters] = useState(0);
 
-    useEffect(() => {
+    const navigateBasePage = useCallback(() =>
+        history.push('/welcome'),
+        [history]);
+
+    const sqlStorage = async () => {
+        const store = new Storage({
+            name: 'db_users',
+            driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
+        });
+        await store.defineDriver(CordovaSQLiteDriver);
+        await store.create();
+
+        const access_token = await store.get('access_token');
+
+        await axios.get('https://itempedia.wrathnet.com/endpoint/api/user', { headers: getHeader(atob(JSON.parse(access_token))) }).then((response: any) => {
+            if (response.status) {
+                setAuthUser(response.data)
+                console.log('sanctum user: ', response.data);
+                setAccessToken(atob(JSON.parse(access_token)));
+
+                axios.get('https://itempedia.wrathnet.com/endpoint/api/auth/user/get/merchant', { headers: getHeader(atob(JSON.parse(access_token))) }).then((response: any) => {
+                    if (response.data.status) {
+                        setAuthMerchant(response.data.data);
+                        setAuthMerchantStatus(true);
+                    }
+                }).catch((error) => {
+                    if (error.response.status == 401) {
+                        navigateBasePage();
+                    } else {
+                        setAuthMerchantStatus(false);
+                    }
+                });
+            }
+        }).catch((error) => {
+            if (error.response.status == 401) {
+                navigateBasePage();
+            } else {
+                alert(error.response)
+            }
+        });
+    }
+
+    useIonViewDidEnter(() => {
         counter++;
         if (counter == 1) {
-            axios.get(URL).then((response: any) => {
-                if (response.data.status) {
-                    setStudents(response.data.data);
-                    console.log('all users: ', response.data.data);
-                }
-            });
-
-            axios.get('https://api-itempedia.vercel.app/endpoint/api/user', { headers: getHeader() }).then((response: any) => {
-                if (response.status) {
-                    console.log('sanctum user: ', response.data);
-                }
-            });
+            sqlStorage();
         }
-    }, []);
+    });
 
-    const modalSearchbar = useRef<HTMLIonModalElement>(null);
-    const input = useRef<HTMLIonInputElement>(null);
+    useIonViewDidLeave(() => {
 
-    const [message, setMessage] = useState(
-        'This modal example uses triggers to automatically open a modal when the button is clicked.'
-    );
+    });
 
-    function confirm() {
-        modalSearchbar.current?.dismiss(input.current?.value, 'confirm');
+    useIonViewWillEnter(() => {
+
+    });
+
+    useIonViewWillLeave(() => {
+        setCounters(counter = 0);
+    });
+
+    const sqlStorageStoreSelectedSegment = async (tabName: String) => {
+        const store = new Storage({
+            name: 'db_users',
+            driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
+        });
+        await store.defineDriver(CordovaSQLiteDriver);
+        await store.create();
+
+        await store.set('transaction_selected_segment', tabName);
+        await navigatePageTransaction();
     }
 
-    function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
-        if (ev.detail.role === 'confirm') {
-            setMessage(`Hello, ${ev.detail.data}!`);
+    const navigatePageTransaction = useCallback(() =>
+        history.push('/home/account/transactionhistory'),
+        [history]);
+
+    const navigatePageTransactionMerchant = useCallback(() =>
+        history.push('/home/account/transactionmerchant'),
+        [history]);
+
+    const moveToTransactionHistory = (dataTab: String) => {
+        sqlStorageStoreSelectedSegment(dataTab);
+    }
+
+    const moveToTransactionMerchant = (dataTab: String) => {
+        console.log("move to transaction merchant");
+        sqlStorageStoreSelectedSegment(dataTab);
+    }
+
+    const logoutAccount = () => {
+        axios.delete('https://itempedia.wrathnet.com/endpoint/api/auth/user/tokensdestroy', { headers: getHeader(accessToken) }).then((response: any) => {
+            if (response.status) {
+                axios.get('https://itempedia.wrathnet.com/endpoint/api/auth/user/signout', { headers: getHeader(accessToken) }).then((response: any) => {
+                    if (response.status) {
+                        alert("You have successfully logged out.");
+                        navigateBasePage();
+                    }
+                }).catch((logResponseErrors));
+            }
+        }).catch((logResponseErrors));
+    }
+
+    const logResponseErrors = (error: any) => {
+        if (axios.isCancel(error)) {
+            console.log("Request cancelled");
+        } else {
+            if (error.response.status == 401) {
+                navigateBasePage();
+                alert(error.response);
+            } else if (error.response.status == 404) {
+                alert(error.response);
+            } else {
+                alert(error.response);
+            }
+        }
+    }
+    const goAddItem = () => {
+
+        const formData: Object = {
+
         }
     }
 
+    const modal = useRef<HTMLIonModalElement>(null);
 
+    function dismiss() {
+        modal.current?.dismiss();
+    }
 
-    const slideOpts = {
-        initialSlide: 0,
-        speed: 400,
-        slidesPerView: 6,
+    const setMerchantStatus = () => {
+        setAuthMerchantStatus(true);
+    }
 
-    };
 
     return (
 
@@ -108,18 +215,18 @@ const Accoount: React.FC = () => {
                             <IonRow>
                                 <IonCol class="flex">
                                     <IonCol size="auto">
-                                        <IonAvatar className="ava-outline">
-                                            <img alt="Silhouette of a person's head" src="http://192.168.100.65:8100/assets/images/profilepicture/avatar.jpg" />
+                                        <IonAvatar className="ava-outline" >
+                                            <img alt="Silhouette of a person's head" src="/assets/images/profilepicture/avatar.jpg" />
                                         </IonAvatar>
                                     </IonCol>
                                     <IonCol >
                                         <IonCol size="auto">
-                                            <span className="account-greet">Hello, </span><span className="account-name">Fuwamage将夜</span>
+                                            <span className="account-greet">Hello, </span><span className="account-name">{authUser?.name}</span> <span onClick={logoutAccount}>Logout</span>
                                         </IonCol>
                                         <IonCol class="block" className="nopad subaccinfo" >
                                             <IonCol size="auto" className="nopad">
                                                 <IonIcon icon={wallet} className="icon-toolbar"></IonIcon>
-                                                <span className="balance-adjust">Rp. 50.000</span>
+                                                <span className="balance-adjust">Rp. 50.000</span>                                              
                                             </IonCol>
                                         </IonCol>
                                     </IonCol>
@@ -138,145 +245,156 @@ const Accoount: React.FC = () => {
                             </IonCol>
                             <IonCol class="block">
                                 <IonText className='txt-tittle sub'>
-                                    Pembeli
+                                    Pembelian
                                 </IonText>
                             </IonCol>
-                            <IonCol>
-                                <IonCol>
-                                    <IonImg src='assets/images/cardpayment.png' alt='signup' className=''></IonImg>
+                            <IonCol class="flex">
+                                <IonCol className="cat-acc" onClick={() => moveToTransactionHistory('waitingpayment')}>
+                                    <IonCol className="adjustment-cat-acc">
+                                        <IonImg src='assets/images/cardpayment.png' alt='signup' className="icon-acc-frame"></IonImg>
+                                    </IonCol>
                                     <IonText className='txt-default'>
-                                        Waiting for Payment
+                                        <span className="txt-cat-acc">Waiting for</span><span className="txt-cat-acc">Payment</span>
                                     </IonText>
                                 </IonCol>
-                                <IonCol>
+                                <IonCol className="cat-acc" onClick={() => moveToTransactionHistory('delivery')}>
+                                    <IonCol className="adjustment-cat-acc">
+                                        <IonImg src='assets/images/delivery.png' alt='signup' className="icon-acc-frame"></IonImg>
+                                    </IonCol>
                                     <IonText className='txt-default'>
-                                        Waiting for Delivery
+                                        <span className="txt-cat-acc">Waiting for</span><span className="txt-cat-acc">Delivery</span>
                                     </IonText>
                                 </IonCol>
-                                <IonCol>
+                                <IonCol className="cat-acc" onClick={() => moveToTransactionHistory('itemsent')}>
+                                    <IonCol className="adjustment-cat-acc">
+                                        <IonImg src='assets/images/itemsent.png' alt='signup' className="icon-acc-frame"></IonImg>
+                                    </IonCol>
                                     <IonText className='txt-default'>
-                                        Item Sent
+                                        <span className="txt-cat-acc">Item</span><span className="txt-cat-acc">Sent</span>
                                     </IonText>
                                 </IonCol>
-                                <IonCol>
+                                <IonCol className="cat-acc" onClick={() => moveToTransactionHistory('successfulltransaction')}>
+                                    <IonCol className="adjustment-cat-acc">
+                                        <IonImg src='assets/images/successtransaction.png' alt='signup' className="icon-acc-frame"></IonImg>
+                                    </IonCol>
                                     <IonText className='txt-default'>
-                                        Successful Transaction
+                                        <span className="txt-cat-acc">Successful</span><span className="txt-cat-acc">Transaction</span>
                                     </IonText>
                                 </IonCol>
                             </IonCol>
-
-
+                            {authMerchantStatus === false ? <OpenMerchant onMerchantRegistered={setMerchantStatus} /> : null}
                         </IonCol>
 
+                        {authMerchantStatus === true ?
+                            <IonCol>
+                                <IonCol class="block">
+                                    <IonText className='txt-tittle'>
+                                        Merchant Management
+                                    </IonText>
+                                </IonCol>
+                                <IonCol class="block">
+                                    <IonText className='txt-tittle sub'>
+                                        Transaksi Merchant
+                                    </IonText>
+                                </IonCol>
+                                <IonCol class="flex">
+                                    <IonCol className="cat-acc" onClick={() => moveToTransactionMerchant('incomingorder')}>
+                                        <IonCol className="adjustment-cat-acc">
+                                            <IonImg src='assets/images/incomingorder.png' alt='signup' className="icon-acc-frame"></IonImg>
+                                        </IonCol>
+                                        <IonText className='txt-default'>
+                                            <span className="txt-cat-acc">Incoming</span><span className="txt-cat-acc">Order</span>
+                                        </IonText>
+                                    </IonCol>
+                                    <IonCol className="cat-acc" onClick={() => moveToTransactionMerchant('waitinguserconfirmation')}>
+                                        <IonCol className="adjustment-cat-acc">
+                                            <IonImg src='assets/images/waitinguserconfirmation.png' alt='signup' className="icon-acc-frame"></IonImg>
+                                        </IonCol>
+                                        <IonText className='txt-default'>
+                                            <span className="txt-cat-acc">Waiting user</span><span className="txt-cat-acc">Confirmation</span>
+                                        </IonText>
+                                    </IonCol>
+                                    <IonCol className="cat-acc" onClick={() => moveToTransactionMerchant('canceledorder')}>
+                                        <IonCol className="adjustment-cat-acc">
+                                            <IonImg src='assets/images/canceledorder.png' alt='signup' className="icon-acc-frame"></IonImg>
+                                        </IonCol>
+                                        <IonText className='txt-default'>
+                                            <span className="txt-cat-acc">Canceled</span><span className="txt-cat-acc">Order</span>
+                                        </IonText>
+                                    </IonCol>
+                                    <IonCol className="cat-acc" onClick={() => moveToTransactionMerchant('outofstock')}>
+                                        <IonCol className="adjustment-cat-acc">
+                                            <IonImg src='assets/images/outofstock.png' alt='signup' className="icon-acc-frame"></IonImg>
+                                        </IonCol>
+                                        <IonText className='txt-default'>
+                                            <span className="txt-cat-acc">Out of</span><span className="txt-cat-acc">Stock</span>
+                                        </IonText>
+                                    </IonCol>
+                                </IonCol>
+                                <IonCol class="block">
+                                    <IonText className='txt-tittle sub'>
+                                        Atur Merchant
+                                    </IonText>
+                                </IonCol>
+                                <IonCol class="flex">
+                                    <IonCol className="cat-acc" id="open-addItem-modal">
+                                        <IonCol className="adjustment-cat-acc">
+                                            <IonImg src='assets/images/incomingorder.png' alt='signup' className="icon-acc-frame"></IonImg>
+                                        </IonCol>
+                                        <IonText className='txt-default'>
+                                            <span className="txt-cat-acc">Add</span><span className="txt-cat-acc">Item</span>
+                                        </IonText>
+                                    </IonCol>
+                                    <IonCol className="cat-acc">
+                                        <IonCol className="adjustment-cat-acc">
+                                            <IonImg src='assets/images/waitinguserconfirmation.png' alt='signup' className="icon-acc-frame"></IonImg>
+                                        </IonCol>
+                                        <IonText className='txt-default'>
+                                            <span className="txt-cat-acc">Edit</span><span className="txt-cat-acc">Item</span>
+                                        </IonText>
+                                    </IonCol>
+                                </IonCol>
 
+                                <IonCol class="flex">
+                                    <IonButton>Snap Midtrans</IonButton>
+                                </IonCol>
+
+                            </IonCol>
+                            : null}
                     </IonRow>
                 </IonGrid>
 
-
-
-
-                {/* Modal Searchbar */}
-                <IonModal className="full" ref={modalSearchbar} trigger="open-modal-searchbar" onWillDismiss={(ev) => onWillDismiss(ev)}>
-                    <IonHeader>
-                        <IonToolbar color="primary-cust-2" className="toolbar-cust">
-
-                            <IonButtons slot="start" className="align-center" onClick={() => modalSearchbar.current?.dismiss()}>
-                                <IonBackButton defaultHref="" disabled={true} class="back-button-searchbar" />
-                            </IonButtons>
-                            <IonGrid fixed={true}>
-                                <IonRow>
-                                    <IonCol >
-                                        <IonSearchbar color="light" class="searchbar" debounce={100} showClearButton="focus" searchIcon={searchOutline} animated={true} placeholder="Cari item kesukaan kamu"></IonSearchbar>
-                                    </IonCol>
-                                </IonRow>
-                            </IonGrid>
-                        </IonToolbar>
-                    </IonHeader>
-                    <IonContent className="ion-padding">
-                        <IonGrid>
-                            <IonRow>
-                                <IonCol size-sm="8" offset-sm="2" size-md="3" offset-md="4.5" className='padding-unset'>
-                                    <IonGrid>
-                                        <IonRow>
-                                            <IonCol>
-                                                <IonText className='txt-tittle'>
-                                                    Terakhir dicari
-                                                </IonText>
-                                            </IonCol>
-                                            <IonCol className="right">
-                                                <IonText className='txt-tittle delete'>
-                                                    Hapus semua
-                                                </IonText>
-                                            </IonCol>
-                                        </IonRow>
-                                    </IonGrid>
-                                    <IonList>
-                                        <IonItem lines='none'>
-                                            <IonIcon slot="start" icon={timeOutline}></IonIcon>
-                                            <IonText>Pokémon Yellow</IonText>
-                                            <IonIcon slot="end" icon={close}></IonIcon>
-                                        </IonItem>
-                                        <IonItem lines='none'>
-                                            <IonIcon slot="start" icon={timeOutline}></IonIcon>
-                                            <IonText>Mega Man X</IonText>
-                                            <IonIcon slot="end" icon={close}></IonIcon>
-                                        </IonItem>
-                                        <IonItem lines='none'>
-                                            <IonIcon slot="start" icon={timeOutline}></IonIcon>
-                                            <IonText>The Legend of Zelda</IonText>
-                                            <IonIcon slot="end" icon={close}></IonIcon>
-                                        </IonItem>
-                                    </IonList>
-                                </IonCol>
-                                <IonCol size-sm="8" offset-sm="2" size-md="3" offset-md="4.5">
-                                    <IonText className='txt-tittle'>
-                                        Terakhir dilihat
-                                    </IonText>
-                                    <IonSlides pager={true} options={slideOpts}>
-                                        <IonSlide>
-                                            <IonItem lines="none" color="clear" className="imageframe">
-                                                <IonImg src="assets/images/items/dummy1.png" alt="itemlast" className="itemlastseen"></IonImg>
-                                            </IonItem>
-                                        </IonSlide>
-                                        <IonSlide>
-                                            <IonItem lines="none" color="clear" className="imageframe">
-                                                <IonImg src="assets/images/items/dummy1.png" alt="itemlast" className="itemlastseen"></IonImg>
-                                            </IonItem>
-                                        </IonSlide>
-                                        <IonSlide>
-                                            <IonItem lines="none" color="clear" className="imageframe">
-                                                <IonImg src="assets/images/items/dummy1.png" alt="itemlast" className="itemlastseen"></IonImg>
-                                            </IonItem>
-                                        </IonSlide>
-                                        <IonSlide>
-                                            <IonItem lines="none" color="clear" className="imageframe">
-                                                <IonImg src="assets/images/items/dummy1.png" alt="itemlast" className="itemlastseen"></IonImg>
-                                            </IonItem>
-                                        </IonSlide>
-                                        <IonSlide>
-                                            <IonItem lines="none" color="clear" className="imageframe">
-                                                <IonImg src="assets/images/items/dummy1.png" alt="itemlast" className="itemlastseen"></IonImg>
-                                            </IonItem>
-                                        </IonSlide>
-                                        <IonSlide>
-                                            <IonItem lines="none" color="clear" className="imageframe">
-                                                <IonImg src="assets/images/items/dummy1.png" alt="itemlast" className="itemlastseen"></IonImg>
-                                            </IonItem>
-                                        </IonSlide>
-                                    </IonSlides>
-                                </IonCol>
-                            </IonRow>
-                        </IonGrid>
-
-
-                    </IonContent>
-                </IonModal>
-                {/* End Modal Searchbar */}
-
-
-
             </IonContent>
+            <IonModal id="open-addItem-mod" ref={modal}
+                trigger="open-addItem-modal"
+                initialBreakpoint={0.75}
+                handleBehavior="cycle"
+            >
+
+                <IonContent className="ion-padding">
+                    <div className="ion-margin-top">
+                        <IonItem>
+                            <IonLabel class="title" position="stacked">Nama Merchant</IonLabel>
+                            <IonInput className="input-box" placeholder='Jaden Shop' ></IonInput>
+                        </IonItem>
+                        <IonItem>
+                            <IonLabel class="title" position="stacked">Merchant Bio's</IonLabel>
+                            <IonInput className="input-box" placeholder='Pasti murah meriah' ></IonInput>
+                        </IonItem>
+                        <IonCol className='btn-center openmerch'>
+                            <IonItem lines="none" >
+                                <IonButton fill="outline" className="btn-login email" >
+                                    Mulai Berjualan
+                                </IonButton>
+                            </IonItem>
+                        </IonCol>
+
+                    </div>
+                </IonContent>
+            </IonModal>
         </IonPage>
+
+
 
 
 
